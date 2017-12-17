@@ -1,25 +1,8 @@
 package com.app.zhy.rxjavatest;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -193,6 +176,117 @@ public class MainActivity extends AppCompatActivity {
 //            @Override
 //            public void accept(String s) throws Exception {
 //                Log.e(TAG, s);
+//            }
+//        });
+
+
+        //java.lang.InterruptedException  为什么在两个observable 事件数量不一样的时候会报java.lang.InterruptedException????
+        //在主线程就不会报错  但是在io线程中就会报java.lang.InterruptedException
+//        Observable<Integer> observable1 = Observable.create(new ObservableOnSubscribe<Integer>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+//                Log.e(TAG, "emit 1");
+//                emitter.onNext(1);
+//                Thread.sleep(1000);
+//
+//                Log.e(TAG, "emit 2");
+//                emitter.onNext(2);
+//                Thread.sleep(1000);
+//
+//                Log.e(TAG, "emit 3");
+//                emitter.onNext(3);
+//                Thread.sleep(1000);
+//
+//                Log.e(TAG, "emit 4");
+//                emitter.onNext(4);
+//                Thread.sleep(1000);
+//
+//                Log.e(TAG, "emit complete1");
+//                emitter.onComplete();
+//            }
+//        }).subscribeOn(Schedulers.io());
+//
+//        Observable<String> observable2 = Observable.create(new ObservableOnSubscribe<String>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+//                Log.e(TAG, "emit A");
+//                emitter.onNext("A");
+//                Thread.sleep(1000);
+//
+//                Log.e(TAG, "emit B");
+//                emitter.onNext("B");
+//                Thread.sleep(1000);
+//
+//                Log.e(TAG, "emit C");
+//                emitter.onNext("C");
+//                Thread.sleep(1000);
+//
+////                Log.e(TAG, "emit D");
+////                emitter.onNext("D");
+////                Thread.sleep(1000);
+//
+//                Log.e(TAG, "emit complete2");
+//                emitter.onComplete();
+//            }
+//        }).subscribeOn(Schedulers.io());
+//
+//        Observable.zip(observable1, observable2, new BiFunction<Integer, String, String>() {
+//            @Override
+//            public String apply(Integer integer, String s) throws Exception {
+//                return integer + s;
+//            }
+//        }).subscribe(new Observer<String>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//                Log.e(TAG, "onSubscribe");
+//            }
+//
+//            @Override
+//            public void onNext(String value) {
+//                Log.e(TAG, "onNext: " + value);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                Log.e(TAG, "onError");
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                Log.e(TAG, "onComplete");
+//            }
+//        });
+
+//        Observable<Integer> observable1 = Observable.create(new ObservableOnSubscribe<Integer>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+//                for (int i = 0;; i++) {   //无限循环发事件
+//                    emitter.onNext(i);
+//                }
+//            }
+//        }).subscribeOn(Schedulers.io());
+//
+//        Observable<String> observable2 = Observable.create(new ObservableOnSubscribe<String>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+//                emitter.onNext("A");
+//            }
+//        }).subscribeOn(Schedulers.io());
+//
+//        Observable.zip(observable1, observable2, new BiFunction<Integer, String, String>() {
+//            @Override
+//            public String apply(Integer integer, String s) throws Exception {
+//                return integer + s;
+//            }
+//        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>() {
+//            @Override
+//            public void accept(String s) throws Exception {
+//                Log.d(TAG, s);
+//            }
+//        }, new Consumer<Throwable>() {
+//            @Override
+//            public void accept(Throwable throwable) throws Exception {
+//                Log.w(TAG, throwable);
 //            }
 //        });
 
